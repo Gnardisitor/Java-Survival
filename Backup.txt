@@ -75,7 +75,7 @@ class Main {
                     String itemNamed = scanner.next();
 
                     // Set Name
-                    backpack.setItemName(backpack.getItemCount()-1, itemNamed);
+                    backpack.setItemName(backpack.getItemCount() - 1, itemNamed);
 
                     System.out.println("You have added the item " +backpack.getItemName(backpack.getItemCount()-1)+ " to your backpack.");
                 } 
@@ -90,16 +90,31 @@ class Main {
                 System.out.println("Slot number in the backpack:");
                 String itemNumbers = scanner.next();
 
+                try {
+                    // Transform String to Integer
+                    Integer.parseInt(itemNumbers);
+                } catch (Exception e) {
+                    // Error Message
+                    System.out.println("Illegal Command. Cannot use letters when declaring an integer. Try again.");
+                    continue;
+                }
+
                 // Transform String to Integer
                 int itemNumbered = Integer.parseInt(itemNumbers);
 
-                if (backpack.getItemName(itemNumbered) == null) {
+                if (itemNumbered < 0) {
+                    System.out.println("Illegal Command. Cannot delete inexistant item. Try again.");
+                    continue;
+                }
+                else if (backpack.getItemName(itemNumbered) == null) {
                     System.out.println("Illegal Command. Cannot delete inexistant item. Try again.");
                     continue;
                 }
                 else {
                     System.out.println("You have removed the item " +backpack.getItemName(itemNumbered)+ ".");
                     backpack.removeItem(itemNumbered);
+                    // Remove Item
+                    backpack.setItemsStored(backpack.getItemCount() - 1);
                 }
 
             }
@@ -111,6 +126,14 @@ class Main {
 
                 System.out.println("Slot number in the backpack:");
                 String numbers = scanner.next();
+
+                try {
+                    // Transform String to Integer
+                    Integer.parseInt(numbers);
+                } catch (Exception e) {
+                    // Error Message
+                    System.out.println("Illegal Command. Cannot use letters when declaring an integer. Try again.");
+                }
 
                 // Transform String to Integer
                 int numbered = Integer.parseInt(numbers);
@@ -124,6 +147,10 @@ class Main {
                     System.out.println("Illegal command. There is no item in this slot. Try again.");
                     continue;
                 }
+                else if (numbered < 0) {
+                    System.out.println("Illegal command. There is no item in this slot. Try again.");
+                    continue;
+                }
                 // Set Name
                 backpack.setItemName(numbered, named);
                 System.out.println("You have named the item number " + numbered + " " + named + ".");
@@ -131,7 +158,7 @@ class Main {
 
             else if (command.equals("/listItems")) {
                 System.out.println("You have in your backpack:");
-                for (int i = 0; i < backpack.getCapacity(); i++) {
+                for (int i = 0; i < backpack.getCapacity(); ++i) {
                     if (backpack.getItemName(i) == null) {
                         System.out.println("Nothing");
                     }
